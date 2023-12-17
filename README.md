@@ -1,12 +1,9 @@
-# Template for a Vue.js project with Bootstrap
+# The weather archive
+This is the frontend for the semesterproject for serverless computing course
 
-This is a minimal template for a Vue.js project using Vite with Bootstrap. It is based on the [Vue CLI](https://cli.vuejs.org/).
+## Technologies
 
-## This template was created with the following steps
-
-https://getbootstrap.com/docs/5.3/getting-sterted/vite/
-
-furthermore, the following packages were installed:
-
-- vue
-- vitejs/plugin-vue
+- Vue.js
+- Vite
+- Bootstrap
+- Vue-Router
