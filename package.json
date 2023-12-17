@@ -1,0 +1,24 @@
+{
+  "name": "bootstrap-vue-minimal",
+  "version": "1.0.0",
+  "description": "minimal vue.js setup with bootstrap and vite from https://getbootstrap.com/docs/5.3/getting-sterted/vite/ guide",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lorenz Döllinger",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "sass": "^1.69.5",
+    "vite": "^4.5.0"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "vue": "^3.3.7",
+    "vue-router": "^4.2.5"
+  }
+}
