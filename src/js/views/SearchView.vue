@@ -1,30 +1,38 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { inject } from 'vue';
 
-const heading = 'The Weather Archive'
+const showError = inject('showError');
+
 const searchOptions = ['Wien', 'Berlin', 'Paris'] // Replace with your autocomplete options
 const searchInput = ref('') // Initialize searchInput as a reactive reference
 const router = useRouter() // Get the router instance
 
-const search = () => {
-  // Navigate to a new route and pass the searchInput as a parameter
-  router.push({ name: 'SearchResult', params: { query: searchInput.value } })
-}
-</script>
 
+const search = () => {
+    // first check if searchInput is in searchOptions
+    if (!searchOptions.includes(searchInput.value)) {
+        showError('Please enter a valid city name!')
+        return
+    }
+    // Navigate to a new route and pass the searchInput as a parameter
+    router.push({ name: 'SearchResult', params: { query: searchInput.value } })
+}
+
+</script>
 <template>
     <div class="container d-flex justify-content-center align-items-center">
         <div>
-            <h1>{{ heading }}</h1>
+            <h1>The Weather Archive</h1>
             <div class="d-flex justify-content-center align-items-center">
                 <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search"
-                    autocomplete="off"
-                    list="autocompleteOptions"
-                    v-model="searchInput"
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                autocomplete="off"
+                list="autocompleteOptions"
+                v-model="searchInput"
                 />
                 <datalist id="autocompleteOptions">
                     <option v-for="option in searchOptions" :value="option" :key="option" />
