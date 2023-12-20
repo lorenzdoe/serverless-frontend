@@ -29,7 +29,7 @@ const emit = defineEmits(['clearError']);
 <style scoped>
 .error-message {
   position: fixed;
-  top: 20px;
+  top: 30px;
   left: 50%;
   transform: translateX(-50%);
   background-color: red;

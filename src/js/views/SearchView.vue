@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue';
 
-const showError = inject('showError');
+const showError = inject('showError'); // use inject to get the showError function from App.vue
 
 const searchOptions = ['Wien', 'Berlin', 'Paris'] // Replace with your autocomplete options
 const searchInput = ref('') // Initialize searchInput as a reactive reference
@@ -13,7 +13,7 @@ const router = useRouter() // Get the router instance
 const search = () => {
     // first check if searchInput is in searchOptions
     if (!searchOptions.includes(searchInput.value)) {
-        showError('Please enter a valid city name!')
+        showError('\'' + searchInput.value + '\' is not a valid search option')
         return
     }
     // Navigate to a new route and pass the searchInput as a parameter
@@ -43,7 +43,7 @@ const search = () => {
     </div>
 </template>
 
-<style>
+<style scoped>
 .container {
     height: 100vh;
     display: flex;
