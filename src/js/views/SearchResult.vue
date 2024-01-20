@@ -76,7 +76,7 @@ onMounted(() => {
                         </li>
                     </ul>
                 </div>
-                <button class="btn btn-primary btn-sm" v-bind:class="{'disabled': !(date && hour)}" v-on:click="fetchData(query,date,hour)">search</button>
+                <button class="btn btn-primary btn-sm" v-bind:class="{'disabled': !(date && hour)}" v-on:click="fetchData(query,date,hour)">show</button>
             </div>
         <div class="mt-3">
             <div class="mb-3">
