@@ -1,18 +1,28 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue';
+import { getCities } from '../api/api';
 
+const router = useRouter() // Get the router instance
 const showError = inject('showError'); // use inject to get the showError function from App.vue
 
-const searchOptions = ['Wien', 'Berlin', 'Paris'] // Replace with your autocomplete options
+const searchOptions = ref([]) // Initialize searchOptions as a reactive reference
 const searchInput = ref('') // Initialize searchInput as a reactive reference
-const router = useRouter() // Get the router instance
 
+const fetchCities = async () => {
+    try {
+        const cities = await getCities() // Call the getCities function from api.js
+        if (cities.length === 0) throw new Error('No cities found') // Throw an error if getCities returns an empty array
+        searchOptions.value = cities // Set searchOptions to the cities array
+    } catch (error) {
+        showError("Error fetching cities: " + error.message) // Show error message if getCities fails
+    }
+}
 
 const search = () => {
     // first check if searchInput is in searchOptions
-    if (!searchOptions.includes(searchInput.value)) {
+    if (!searchOptions || !searchOptions.value.includes(searchInput.value)) {
         showError('\'' + searchInput.value + '\' is not a valid search option')
         return
     }
@@ -20,6 +30,10 @@ const search = () => {
     router.push({ name: 'SearchResult', params: { query: searchInput.value } })
 }
 
+// TODO: add store to save cities and not fetch them every time
+onMounted(() => {
+    fetchCities();
+});
 </script>
 <template>
     <div class="container d-flex justify-content-center align-items-center">

@@ -1,28 +1,89 @@
 <script setup>
-const heading = 'Video View';
+import { onMounted, ref, inject } from 'vue';
+import { getAvialableSlotsForCity, getVideoData } from '../api/api';
 
+const showError = inject('showError'); // use inject to get the showError function from App.vue
 const props = defineProps({
     query: {
         type: String,
         required: true
     }
 });
+const availableSlots = ref();
+const keys = ref([]);       // keys of availableSlots
+const slots = ref([]);      // selected slots
+const date = ref('');       // selected date
+const hour = ref('');       // selected hour
+const image_urls = ref([])  // video data for selected date and hour
+const plot_urls = ref([])   // plot data for selected date and hour  
 
+const fetchSlots = async () => {
+    try {
+        const slots = await getAvialableSlotsForCity(props.query);
+        if (slots.length === 0) throw new Error('No slots found');
+        availableSlots.value = slots;
+        keys.value = Object.keys(slots);
+    } catch (error) {
+        showError("Error fetching slots: " + error.message);
+    }
+}
+const select = (key) => {
+    date.value = key;
+    slots.value = availableSlots.value[key];
+    hour.value = '';
+}
+const fetchData = async (query, date, hour) => {
+    try {
+        const video = await getVideoData(query, date, hour);
+        image_urls.value = video.images;
+        plot_urls.value = video.plots;
+    } catch (error) {
+        showError("Error fetching video data: " + error.message);
+    }
+}
+
+onMounted(() => {
+    fetchSlots();
+});
 </script>
 
 <template>
     <div class="container justify-content-center align-items-center">
         <div>
-            <h1>{{ heading }}</h1>
-            <h2>Ready to call api for: {{ query }}</h2>
-            <router-link to="/">Back to search</router-link>
+            <h1><router-link to="/">The Weather Archive</router-link></h1>
+            <h2><b>{{ query }}</b></h2>
+            <h3>d: <b>{{ date ? date : 'not selected' }}</b></h3>
+            <h3>h: <b>{{ hour ? hour : 'not selected' }}</b></h3>
         </div>
+            <div class="d-flex">
+                <div class="btn-group me-2">
+                    <button class="btn btn-light border btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Date
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li v-for="key in keys" :key="key">
+                            <a class="dropdown-item" href="#" v-on:click="select(key)">{{ key }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-light border btn-sm dropdown-toggle me-2" v-bind:class="{'disabled': !date}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Hour
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li v-for="slot in slots" :key="slot">
+                            <a class="dropdown-item" href="#" v-on:click="hour=slot;">{{ slot }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary btn-sm" v-bind:class="{'disabled': !(date && hour)}" v-on:click="fetchData(query,date,hour)">search</button>
+            </div>
         <div class="mt-3">
             <div class="mb-3">
-                <img class="border border-black" src="https://via.placeholder.com/600x300" alt="Placeholder Image 1">
+                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 1">
             </div>
             <div>
-                <img class="border border-black" src="https://via.placeholder.com/600x300" alt="Placeholder Image 2">
+                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 2">
             </div>
         </div>
     </div>
