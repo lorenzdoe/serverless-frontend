@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, ref, inject } from 'vue';
 import { getAvialableSlotsForCity, getVideoData } from '../api/api';
+import Carousel from '../components/Carousel.vue';
+import Slide from '../components/Slide.vue';
 
 const showError = inject('showError'); // use inject to get the showError function from App.vue
 const props = defineProps({
@@ -9,6 +11,15 @@ const props = defineProps({
         required: true
     }
 });
+
+const SearchResult = {
+    name: 'SearchResult',
+    components: {
+        Carousel,
+        Slide
+    },
+};
+
 const availableSlots = ref();
 const keys = ref([]);       // keys of availableSlots
 const slots = ref([]);      // selected slots
@@ -55,44 +66,112 @@ onMounted(() => {
             <h3>d: <b>{{ date ? date : 'not selected' }}</b></h3>
             <h3>h: <b>{{ hour ? hour : 'not selected' }}</b></h3>
         </div>
-            <div class="d-flex">
-                <div class="btn-group me-2">
-                    <button class="btn btn-light border btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Date
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li v-for="key in keys" :key="key">
-                            <a class="dropdown-item" href="#" v-on:click="select(key)">{{ key }}</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-light border btn-sm dropdown-toggle me-2" v-bind:class="{'disabled': !date}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Hour
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li v-for="slot in slots" :key="slot">
-                            <a class="dropdown-item" href="#" v-on:click="hour=slot;">{{ slot }}</a>
-                        </li>
-                    </ul>
-                </div>
-                <button class="btn btn-primary btn-sm" v-bind:class="{'disabled': !(date && hour)}" v-on:click="fetchData(query,date,hour)">show</button>
+        <div class="d-flex">
+            <div class="btn-group me-2">
+                <button class="btn btn-light border btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Select Date
+                </button>
+                <ul class="dropdown-menu">
+                    <li v-for="key in keys" :key="key">
+                        <a class="dropdown-item" href="#" v-on:click="select(key)">{{ key }}</a>
+                    </li>
+                </ul>
             </div>
-        <div class="mt-3">
-            <div class="mb-3">
-                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 1">
+            <div class="btn-group">
+                <button class="btn btn-light border btn-sm dropdown-toggle me-2" v-bind:class="{ 'disabled': !date }"
+                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Hour
+                </button>
+                <ul class="dropdown-menu">
+                    <li v-for="slot in slots" :key="slot">
+                        <a class="dropdown-item" href="#" v-on:click="hour = slot;">{{ slot }}</a>
+                    </li>
+                </ul>
             </div>
-            <div>
-                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 2">
-            </div>
+            <button class="btn btn-primary btn-sm" v-bind:class="{ 'disabled': !(date && hour) }"
+                v-on:click="fetchData(query, date, hour)">show</button>
         </div>
+
+        <div class="mt-3">
+      <!-- Bootstrap Carousel for Images -->
+      <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div v-for="(imageUrl, index) in image_urls" :key="index" class="carousel-item" :class="{ active: index === 0 }">
+            <img :src="imageUrl" class="d-block w-100" alt="Weather Image">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Bootstrap Carousel for Plots -->
+      <div id="plotCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div v-for="(plotUrl, index) in plot_urls" :key="index" class="carousel-item" :class="{ active: index === 0 }">
+            <img :src="plotUrl" class="d-block w-100" alt="Plot Image">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#plotCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#plotCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
+
+    </div>
+
 </template>
 
 <style scoped>
 .container {
-    height: 100vh;
     display: flex;
     flex-direction: column;
 }
-</style>
+
+.carousel {
+    height: 350px;
+    /* Set a fixed height for the carousel items */
+    width: 500px;
+    max-width: 500px;
+    max-height: 350px;
+}
+
+.carousel-item {
+    height: 350px;
+    /* Set a fixed height for the carousel items */
+    width: 500px;
+    max-width: 500px;
+    max-height: 350px;
+}
+
+/* Adjustments for Bootstrap Carousel */
+.carousel-inner img {
+    max-width: 350px;
+    /* height: auto; */
+    max-height: 500px;
+    /* Set a max height to control the image size */
+}
+
+/* Customize Carousel Arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: gray;
+    /* Set the background color to gray */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 3%;
+    /* Adjust arrow width if needed */
+}</style>
