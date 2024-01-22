@@ -78,14 +78,43 @@ onMounted(() => {
                 </div>
                 <button class="btn btn-primary btn-sm" v-bind:class="{'disabled': !(date && hour)}" v-on:click="fetchData(query,date,hour)">show</button>
             </div>
-        <div class="mt-3">
-            <div class="mb-3">
-                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 1">
+            <div id="carouselExampleControls" class="carousel slide mt-3" v-bind:class="{'d-none': image_urls.length === 0}" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item border active">
+                        <img :src="image_urls[0]" class="" alt="...">
+                    </div>
+                    <div class="carousel-item border" v-for="(url, index) in image_urls.slice(1)" :key="index">
+                        <img :src="url" class="" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <div>
-                <img class="border border-black" src="../../img/500x350.png" alt="Placeholder Image 2">
+
+            <div id="carouselExampleControls" class="carousel slide mt-3" v-bind:class="{'d-none': plot_urls.length === 0}" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item border active">
+                        <img :src="plot_urls[0]" class="" alt="...">
+                    </div>
+                    <div class="carousel-item border" v-for="(url, index) in plot_urls.slice(1)" :key="index">
+                        <img :src="url" class="" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-        </div>
     </div>
 </template>
 
@@ -94,5 +123,9 @@ onMounted(() => {
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    color: primary;
 }
 </style>
