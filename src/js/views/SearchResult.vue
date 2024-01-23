@@ -12,10 +12,6 @@ const props = defineProps({
 
 const SearchResult = {
     name: 'SearchResult',
-    components: {
-        Carousel,
-        Slide
-    },
 };
 
 const availableSlots = ref();
@@ -99,14 +95,7 @@ onMounted(() => {
             <img :src="imageUrl" class="d-block w-100" alt="Weather Image">
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+
       </div>
 
       <!-- Bootstrap Carousel for Plots -->
@@ -151,6 +140,7 @@ onMounted(() => {
     width: 500px;
     max-width: 500px;
     max-height: 350px;
+    transition: 0.6s ease-in-out left;
 }
 
 /* Adjustments for Bootstrap Carousel */
