@@ -21,7 +21,15 @@ const date = ref('');       // selected date
 const hour = ref('');       // selected hour
 const image_urls = ref([])  // video data for selected date and hour
 const active_image = ref(0) // index of active image
+const active_image = ref(0) // index of active image
 const plot_urls = ref([])   // plot data for selected date and hour  
+
+// update the active image every 2 sec
+setInterval(() => {
+    if (image_urls.value.length > 0) {
+        active_image.value = (active_image.value + 1) % image_urls.value.length;
+    }
+}, 2000);
 
 
 // update the active image every 2 sec
