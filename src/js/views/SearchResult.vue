@@ -20,7 +20,16 @@ const slots = ref([]);      // selected slots
 const date = ref('');       // selected date
 const hour = ref('');       // selected hour
 const image_urls = ref([])  // video data for selected date and hour
+const active_image = ref(0) // index of active image
 const plot_urls = ref([])   // plot data for selected date and hour  
+
+
+// update the active image every 2 sec
+setInterval(() => {
+    if (image_urls.value.length > 0) {
+        active_image.value = (active_image.value + 1) % image_urls.value.length;
+    }
+}, 2000);
 
 const fetchSlots = async () => {
     try {
@@ -89,20 +98,15 @@ onMounted(() => {
 
         <div class="mt-3">
       <!-- Bootstrap Carousel for Images -->
-      <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div v-for="(imageUrl, index) in image_urls" :key="index" class="carousel-item" :class="{ active: index === 0 }">
-            <img :src="imageUrl" class="d-block w-100" alt="Weather Image">
-          </div>
-        </div>
-
+      <div id="imageCarousel" class="carousel slide" v-bind:class="{'d-none': plot_urls.length === 0}" data-bs-ride="carousel">
+        <img :src="image_urls[active_image]" class="d-block w-100" alt="...">
       </div>
 
       <!-- Bootstrap Carousel for Plots -->
-      <div id="plotCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
+      <div id="plotCarousel" class="carousel slide mt-3" v-bind:class="{'d-none': plot_urls.length === 0}" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div v-for="(plotUrl, index) in plot_urls" :key="index" class="carousel-item" :class="{ active: index === 0 }">
-            <img :src="plotUrl" class="d-block w-100" alt="Plot Image">
+            <img :src="plotUrl" alt="Plot Image">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#plotCarousel" data-bs-slide="prev">
@@ -132,23 +136,6 @@ onMounted(() => {
     width: 500px;
     max-width: 500px;
     max-height: 350px;
-}
-
-.carousel-item {
-    height: 350px;
-    /* Set a fixed height for the carousel items */
-    width: 500px;
-    max-width: 500px;
-    max-height: 350px;
-    transition: 0.6s ease-in-out left;
-}
-
-/* Adjustments for Bootstrap Carousel */
-.carousel-inner img {
-    max-width: 350px;
-    /* height: auto; */
-    max-height: 500px;
-    /* Set a max height to control the image size */
 }
 
 /* Customize Carousel Arrows */
