@@ -117,9 +117,6 @@ onMounted(() => {
     flex-direction: column;
 }
 .carousel {
-    height: 350px;
-    /* Set a fixed height for the carousel items */
-    width: 500px;
     max-width: 500px;
     max-height: 350px;
 }
