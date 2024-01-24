@@ -90,24 +90,23 @@ onMounted(() => {
                 <img :src="image_urls[active_image]" class="d-block w-100" alt="...">
             </div>
 
-            <div id="carouselExampleControls" class="carousel slide mt-3" v-bind:class="{'d-none': plot_urls.length === 0}" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item border active">
-                        <img :src="plot_urls[0]" class="" alt="...">
-                    </div>
-                    <div class="carousel-item border" v-for="(url, index) in plot_urls.slice(1)" :key="index">
-                        <img :src="url" class="" alt="...">
-                    </div>
+                  <!-- Bootstrap Carousel for Plots -->
+            <div id="plotCarousel" class="carousel slide mt-3" v-bind:class="{'d-none': plot_urls.length === 0}" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div v-for="(plotUrl, index) in plot_urls" :key="index" class="carousel-item" :class="{ active: index === 0 }">
+                  <img :src="plotUrl" class="d-block w-100" alt="Plot Image">
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#plotCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#plotCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
+
     </div>
 </template>
 
